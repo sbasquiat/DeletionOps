@@ -2,36 +2,24 @@ package main
 
 import (
 	"fmt"
-	"time"
-
-	"github.com/jung-kurt/gofpdf"
-
+	"os"
 )
 
-func writePDF(id, hash string, tsrBytes int) error {
-	pdf := gofpdf.New("P", "mm", "A4", "")
-	pdf.SetTitle("Proof‑of‑Deletion", false)
-	pdf.AddPage()
-	pdf.SetFont("Helvetica", "B", 16)
-	pdf.Cell(0, 10, "DeletionOps – Proof‑of‑Deletion")
-	pdf.Ln(12)
+// writePDF is a placeholder that writes a plain‑text “PDF”.
+// Replace later with real gofpdf logic.
+func writePDF(fileID, hash string, tsaBytes int) error {
+	name := fmt.Sprintf("receipt_%s.pdf", fileID)
+	f, err := os.Create(name)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
 
-	pdf.SetFont("Helvetica", "", 12)
-	pdf.Cell(50, 8, "File ID:")
-	pdf.Cell(0, 8, id)
-	pdf.Ln(8)
-
-	pdf.Cell(50, 8, "Pre‑delete SHA‑256:")
-	pdf.Cell(0, 8, hash)
-	pdf.Ln(8)
-
-	pdf.Cell(50, 8, "TSA bytes:")
-	pdf.Cell(0, 8, fmt.Sprint(tsrBytes))
-	pdf.Ln(8)
-
-	pdf.Cell(50, 8, "Generated:")
-	pdf.Cell(0, 8, time.Now().Format(time.RFC3339))
-	pdf.Ln(12)
-
-	return pdf.OutputFileAndClose("receipt.pdf")
+	_, err = fmt.Fprintf(f,
+		"DeletionOps – Proof‑of‑Deletion\n"+
+			"File ID: %s\n"+
+			"Pre‑delete SHA‑256: %s\n"+
+			"TSA response bytes: %d\n",
+		fileID, hash, tsaBytes)
+	return err
 }

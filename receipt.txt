@@ -1,0 +1,4 @@
+DeletionOps – Proof-of-Deletion
+File ID: 1fQI12-tkV7nuKUQKUfkUWOfd4YW4fKNy
+Pre-delete SHA256: 4999ae6dabc5ab60be720272b8f34a0068cc54597da2bdded3307d6c44770efa
+TSA response bytes: 1354
